@@ -93,7 +93,7 @@ setup(name='obb_anns',
       packages=['obb_anns'],
       install_requires=[
           'numpy',
-          'pillow',
+          'pillow<=9.5.0',
           'colorcet',
           'pandas',
           'tqdm'
