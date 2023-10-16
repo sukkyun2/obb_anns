@@ -709,7 +709,8 @@ class OBBAnns:
                   annotation_set=None,
                   oriented=True,
                   instances=False,
-                  show=True):
+                  show=True,
+                  print_label=False):
         """Uses PIL to visualize the ground truth labels of a given image.
 
         img_idx and img_id are mutually exclusive. Only one can be used at a
@@ -734,6 +735,8 @@ class OBBAnns:
         :param bool instances: Choose whether to show classes or instances. If
             False, then shows classes. Else, shows instances as the labels on
             bounding boxes.
+        :param Optional[bool] print_label: Determines if the class labels
+            are printed on the visualization
         """
         # Since we can only visualize a single image at a time, we do i[0] so
         # that we don't have to deal with lists. get_img_ann_pair() returns a
@@ -784,6 +787,7 @@ class OBBAnns:
                 osp.splitext(img_info['filename'])[0] + '_seg.png'
             )
             overlay = Image.open(seg_fp)
+            overlay = overlay.convert('L')
 
             # Here we overlay the segmentation on the original image using the
             # colorcet colors
@@ -809,7 +813,7 @@ class OBBAnns:
         # Now draw the gt bounding boxes onto the image
         for ann in ann_info.to_dict('records'):
             draw = self._draw_bbox(draw, ann, '#ed0707', oriented,
-                                   annotation_set, instances)
+                                   annotation_set, print_label)
 
         if self.proposals is not None:
             prop_info = self.get_img_props(idxs=img_idx, ids=img_id)
